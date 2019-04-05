@@ -1,0 +1,57 @@
+#include <stdio.h>
+int main(int argc, char *argv[]) {
+	int n,i=0,j=1,k=0,A[5]={0};//一会试试把j定义在for循环内 
+	double a4=0;
+	scanf("%d",&n);
+	int a[n];
+	while(i<n)
+	{
+		scanf("%d",&a[i]);
+		i++;
+	}
+	for(i=0;i<n;i++)
+	{
+		/*if(!(a[i]%5&&a[i]%2))
+		{
+			a1+=a[i];
+		}
+		if(a[i]%5==1)
+		{
+			a2+=j*a[i];
+			j=-j;
+		}
+		if(a[i]%5==2)
+		{
+			a3++;
+		}
+		if(a[i]%5==3)
+		{
+			k++;
+			a4+=a[i];
+		}
+		if(a[i]%5==4)
+		{
+			if(a[i]>a5)
+				a5=a[i];
+		}*/
+		switch(a[i]%5)
+		{
+			case 0:if(!(a[i]%2)) A[0]+=a[i];break;
+			case 1:A[1]+=j*a[i];j=-j;break;
+			case 2:A[2]++;break;
+			case 3:k++;A[3]+=a[i];break;
+			case 4:if(a[i]>A[4]) A[4]=a[i];break;
+		}
+	}
+	for(i=0;i<5;i++)
+	{
+		if(!A[i])
+			printf("N");
+		else if(i==3)
+			printf("%.1lf",1.0*A[i]/k);
+		else
+			printf("%d",A[i]);
+		if(i<4) printf(" ");
+	}
+	return 0;
+}
