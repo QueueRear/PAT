@@ -1,0 +1,115 @@
+/*一类：d>h&&c>h
+二类：d>h&&l<c<h
+三类：l<d<h&&l<c<h&&d>c
+四类：l<d<h&&l<c<h&&d<c||l<d<h&&c>h（即l<d<h&&d<c) 
+五类：任何一门小于l的*/
+#include<stdio.h>
+typedef struct student{
+	int num;//如果学号零开头 
+	char numb[9]; 
+	int d,c,lv,sum;
+}stu;
+void sort(const int*m,stu*p,int n);
+void sort2(stu*p,int*m);
+int main()
+{
+	int n,l,h,i=0;
+	int m[5]={0};
+	scanf("%d %d %d",&n,&l,&h);
+	stu s[n];
+	while(i<n)
+	{
+		stu *p=&s[i++];
+		scanf("%s %i %i",&(*p).numb,&(*p).d,&(*p).c);
+		int j=0;
+		p->num=0;
+		while(j<8)
+		{
+			p->num=p->numb[j]-'0'+10*p->num;
+			j++;
+		}
+		p->sum=p->c+p->d;
+		if(p->d<l||p->c<l)//德才任意一项不达标直接末等 
+		{
+			p->lv=4;
+		}
+		else if(p->d>=h)
+		{
+			if(p->c>=h) 
+			{
+				p->lv=0;
+			}
+			else p->lv=1;
+		}
+		else if(p->c>p->d)//不知道德才相等会怎样
+		{
+			p->lv=3;
+		}
+		else
+			p->lv=2;
+		m[p->lv]++;//等级计数君 
+	}
+	printf("%d\n",n-m[4]);
+	/*for(i=0;i<n-m[4];i++)
+	{
+		printf("%s %i %i\n",s[i].numb,s[i].d,s[i].c);
+	}
+	printf("\n");*/
+	sort(m,s,n);
+	sort2(s,m);
+	for(i=0;i<n-m[4];i++)
+	{
+		printf("%s %i %i",s[i].numb,s[i].d,s[i].c);
+		if(i<n-m[4]-1)
+			printf("\n");
+	}
+	return 0;
+}
+void sort(const int*m, stu*p,int n)
+{
+	stu*q=&p[0],*r=&p[n-1],t;
+	int v=0,i;
+	for(v;v<5;v++)
+	{
+		for(i=0;i<n;i++)
+		{
+			//int j=0;
+			if(p[i].lv==v)
+			{
+				t=p[i];p[i]=*q;*q=t;
+				q++;
+				//p++;j++;
+			}
+			/*else{
+				p++;
+			}
+			if(j==m[v])//已经搜索完一个种类的考生
+			{
+				continue; 
+			}*/
+		}
+	}
+	return;
+}
+void sort2(stu*p,int*m)
+{
+	int a=0,b=0,i,j,v;
+	for(v=0;v<5;v++)
+	{
+		b+=m[v];
+		for(i=a;i<b-1;i++)
+		{
+			for(j=i+1;j<b;j++)
+			{
+				if(p[i].sum<p[j].sum
+					||p[i].sum==p[j].sum&&p[i].d<p[j].d
+					||p[i].sum==p[j].sum&&p[i].d==p[j].d&&p[i].num>p[j].num)
+				{
+					stu t;
+					t=p[i];p[i]=p[j];p[j]=t;
+				}
+			}
+		}
+		a=b;
+	}
+}
