@@ -6,8 +6,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 typedef struct student{
-	int num;//如果学号零开头 
-	char numb[9]; 
+	int num;
 	int d,c,lv,sum;
 }stu;
 int cmp(const void*a,const void*b)
@@ -39,14 +38,7 @@ int main()
 	while(i<n)
 	{
 		stu *p=&s[i++];
-		scanf("%s %i %i",&(*p).numb,&(*p).d,&(*p).c);
-		int j=0;
-		p->num=0;
-		while(j<8)
-		{
-			p->num=p->numb[j]-'0'+10*p->num;
-			j++;
-		}
+		scanf("%i %i %i",&(*p).num,&(*p).d,&(*p).c);
 		p->sum=p->c+p->d;
 		if(p->d<l||p->c<l)//德才任意一项不达标直接末等 
 		{
@@ -72,7 +64,7 @@ int main()
 	qsort(s,n,sizeof(stu),cmp);
 	for(i=0;i<n-m[4];i++)
 	{
-		printf("%s %i %i",s[i].numb,s[i].d,s[i].c);
+		printf("%08i %i %i",s[i].num,s[i].d,s[i].c);//以防准考证号高位为零
 		if(i<n-m[4]-1)
 			printf("\n");
 	}
